@@ -1,23 +1,15 @@
-// Websocket kapcsolat létrehozása
-const socket = new WebSocket('ws.//localhost:8080');
+const messages = document.getElementById("messages");
+const chatForm = document.getElementById("chat-form");
+const username = document.getElementById("username");
+const message = document.getElementById("message");
 
-// Kapcsolat nyitásakor elküldjük a felhasználó nevét
-socket.onopen = function(event) {
-  socket.send(prompt("Enter your username:"));
-};
+chatForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const user = username.value;
+  const msg = message.value;
 
-// Üzenet fogadása esetén a chat log-ba hozzáadjuk
-socket.onmessage = function(event) {
-  const chatLog = document.getElementById("chat-log");
-  const message = document.createElement("div");
-  message.innerHTML = event.data;
-  chatLog.appendChild(message);
-};
+  messages.innerHTML += `<p><strong>${user}:</strong> ${msg}</p>`;
 
-// Üzenet elküldése a gomb megnyomásakor
-const sendButton = document.getElementById("send-button");
-sendButton.onclick = function() {
-  const messageInput = document.getElementById("message-input");
-  socket.send(messageInput.value);
-  messageInput.value = "";
-};
+  username.value = "";
+  message.value = "";
+});
